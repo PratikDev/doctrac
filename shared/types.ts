@@ -1,3 +1,7 @@
+import type { GENDER_OPTIONS } from "./schemas/patient";
+
+export type Gender = (typeof GENDER_OPTIONS)[number];
+
 export interface PaginationMeta {
   page: number;
   limit: number;
@@ -32,7 +36,7 @@ export interface PatientDTO {
   _id: string;
   name: string;
   age: number;
-  gender: string;
+  gender: Gender;
   phone: string;
   email: string;
   condition: string;
