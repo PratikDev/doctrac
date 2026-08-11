@@ -2,18 +2,18 @@ import { z } from "zod";
 import { dateRangeQuerySchema, paginationQuerySchema } from "./common";
 
 export const doctorInputSchema = z.object({
-  name: z.string().min(1),
-  specialization: z.string().min(1),
-  hospital: z.string().min(1),
-  phone: z.string().min(1),
-  email: z.email(),
+  name: z.string().min(1, "Name is required"),
+  specialization: z.string().min(1, "Specialization is required"),
+  hospital: z.string().min(1, "Hospital is required"),
+  phone: z.string().min(1, "Phone number is required"),
+  email: z.email("Enter a valid email address"),
 });
 
 export const doctorUpdateSchema = doctorInputSchema.partial();
 
 export const listDoctorsQuerySchema = paginationQuerySchema.extend({
-  search: z.string().trim().min(1).optional(),
-  specialization: z.string().trim().min(1).optional(),
+  search: z.string().trim().min(1, "Search can't be empty").optional(),
+  specialization: z.string().trim().min(1, "Specialization can't be empty").optional(),
   ...dateRangeQuerySchema.shape,
 });
 
