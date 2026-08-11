@@ -28,7 +28,9 @@ const doctors = [
   { name: "Dr. Liam O'Brien", specialization: "Dermatology", hospital: "Riverside Children's Hospital", phone: "+1 555-0112", email: "liam.obrien@doctrac.test", days: 5 },
 ].map(({ days, ...doctor }) => {
   const createdAt = daysAgo(days);
-  return { ...doctor, createdAt, updatedAt: createdAt };
+  // Bypassing the raw driver skips doctorInputSchema's lowercase transform,
+  // so specialization has to be normalized here to match what the API filter expects.
+  return { ...doctor, specialization: doctor.specialization.toLowerCase(), createdAt, updatedAt: createdAt };
 });
 
 async function seedDoctors() {
