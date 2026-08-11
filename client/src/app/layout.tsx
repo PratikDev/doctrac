@@ -1,3 +1,4 @@
+import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 import type { Metadata } from "next";
@@ -17,7 +18,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-	title: "Doctor Tracker",
+	title: "DocTrac",
 	description: "Manage doctors and their patients.",
 };
 
@@ -36,6 +37,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
 		>
 			<body className="min-h-full flex flex-col">
 				<TooltipProvider>{children}</TooltipProvider>
+				<Toaster />
 			</body>
 		</html>
 	);
