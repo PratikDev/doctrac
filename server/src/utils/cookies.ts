@@ -1,7 +1,8 @@
+import { AUTH_COOKIE_NAME } from "@doctrac/shared/constants";
 import type { CookieOptions } from "express";
 import { env } from "@/config/env";
 
-export const AUTH_COOKIE_NAME = "token";
+export { AUTH_COOKIE_NAME };
 
 // Client and server are different origins even in dev (different ports), but
 // same registrable "site", so `lax` works locally. In production they may be
