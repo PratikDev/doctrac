@@ -25,6 +25,22 @@ export function useDoctorPatientsQuery(doctorId: string, page: number) {
   });
 }
 
+export interface PatientsListParams {
+  page: number;
+  search?: string;
+  condition?: string;
+  startDate?: string;
+  endDate?: string;
+}
+
+export function usePatientsQuery(params: PatientsListParams) {
+  return useQuery({
+    queryKey: ["patients", params],
+    queryFn: () => apiClient.get<PatientListResponse>(`/api/patients${buildQueryString({ limit: 10, ...params })}`),
+    placeholderData: keepPreviousData,
+  });
+}
+
 export function useAddPatientMutation() {
   return useMutation({
     mutationFn: ({ doctorId, input }: { doctorId: string; input: PatientInput }) =>
@@ -57,6 +73,19 @@ export function useDeletePatientFromDoctorMutation() {
   return useMutation({
     mutationFn: ({ doctorId, patientId }: { doctorId: string; patientId: string }) =>
       apiClient.delete<void>(`/api/doctors/${doctorId}/patients/${patientId}`),
+    onSuccess: () => {
+      invalidatePatients();
+      toast.success("Patient deleted");
+    },
+    onError: (err) => {
+      toast.error(err instanceof Error ? err.message : "Failed to delete patient");
+    },
+  });
+}
+
+export function useDeletePatientMutation() {
+  return useMutation({
+    mutationFn: (id: string) => apiClient.delete<void>(`/api/patients/${id}`),
     onSuccess: () => {
       invalidatePatients();
       toast.success("Patient deleted");
