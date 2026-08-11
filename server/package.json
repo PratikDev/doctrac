@@ -8,7 +8,7 @@
     "start": "tsx src/server.ts",
     "typecheck": "tsc --noEmit",
     "seed": "tsx src/scripts/seedAdmin.ts",
-    "seed:doctors": "tsx src/scripts/seedDoctors.ts"
+    "seed:data": "tsx src/scripts/seedData.ts"
   },
   "devDependencies": {
     "@types/cookie-parser": "^1.4.10",
