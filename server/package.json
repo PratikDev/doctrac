@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "tsx watch src/server.ts",
     "start": "tsx src/server.ts",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "seed": "tsx src/scripts/seedAdmin.ts"
   },
   "devDependencies": {
     "@types/cookie-parser": "^1.4.10",
@@ -14,9 +15,7 @@
     "@types/express": "^5.0.6",
     "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^22.0.0",
-    "tsx": "^4.19.0"
-  },
-  "peerDependencies": {
+    "tsx": "^4.19.0",
     "typescript": "^5"
   },
   "dependencies": {

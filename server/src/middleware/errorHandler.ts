@@ -1,4 +1,5 @@
 import type { NextFunction, Request, Response } from "express";
+import { z, ZodError } from "zod";
 
 export class ApiError extends Error {
   status: number;
@@ -17,6 +18,11 @@ export function notFoundHandler(req: Request, res: Response) {
 export function errorHandler(err: unknown, req: Request, res: Response, next: NextFunction) {
   if (err instanceof ApiError) {
     res.status(err.status).json({ error: err.message });
+    return;
+  }
+
+  if (err instanceof ZodError) {
+    res.status(400).json({ error: "Validation failed", details: z.treeifyError(err) });
     return;
   }
 
