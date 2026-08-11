@@ -9,7 +9,7 @@ function pageTitle(pathname: string): string {
 	const match = navItems.find(
 		(item) => pathname === item.href || pathname.startsWith(`${item.href}/`),
 	);
-	return match?.title ?? "Doctor Tracker";
+	return match?.title ?? "DocTrac";
 }
 
 export function SiteHeader() {
