@@ -22,6 +22,24 @@ export function useDoctorsQuery(params: DoctorsListParams) {
   });
 }
 
+export function useDoctorQuery(id: string) {
+  return useQuery({
+    queryKey: ["doctors", id],
+    queryFn: () => apiClient.get<DoctorDTO>(`/api/doctors/${id}`),
+    retry: false,
+  });
+}
+
+/** Powers the doctor combobox (patient add/edit forms) — no results until the admin types something. */
+export function useDoctorOptionsQuery(search: string) {
+  return useQuery({
+    queryKey: ["doctorOptions", search],
+    queryFn: () => apiClient.get<DoctorListResponse>(`/api/doctors${buildQueryString({ search, limit: 8 })}`),
+    enabled: search.length > 0,
+    placeholderData: keepPreviousData,
+  });
+}
+
 function invalidateDoctors() {
   queryClient.invalidateQueries({ queryKey: ["doctors"] });
   queryClient.invalidateQueries({ queryKey: ["dashboard", "stats"] });
