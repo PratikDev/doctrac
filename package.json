@@ -12,6 +12,8 @@
     "seed": "npm run seed --workspace=server"
   },
   "devDependencies": {
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
     "concurrently": "^10.0.0"
   }
 }
