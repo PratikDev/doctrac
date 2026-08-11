@@ -1,4 +1,5 @@
 import type { NextFunction, Request, Response } from "express";
+import mongoose from "mongoose";
 import { z, ZodError } from "zod";
 
 export class ApiError extends Error {
@@ -23,6 +24,11 @@ export function errorHandler(err: unknown, req: Request, res: Response, next: Ne
 
   if (err instanceof ZodError) {
     res.status(400).json({ error: "Validation failed", details: z.treeifyError(err) });
+    return;
+  }
+
+  if (err instanceof mongoose.Error.CastError) {
+    res.status(400).json({ error: `Invalid ${err.path}: ${err.value}` });
     return;
   }
 
