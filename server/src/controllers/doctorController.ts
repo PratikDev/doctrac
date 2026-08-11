@@ -1,23 +1,10 @@
+import { idParamSchema } from "@doctrac/shared/schemas/common";
+import { doctorInputSchema, doctorUpdateSchema, listDoctorsQuerySchema } from "@doctrac/shared/schemas/doctor";
 import type { Request, Response } from "express";
-import { z } from "zod";
 import { ApiError } from "@/middleware/errorHandler";
 import { Doctor } from "@/models/Doctor";
-import { buildDateRangeFilter, dateRangeQuerySchema } from "@/utils/dateRange";
-import { buildPaginationMeta, paginationQuerySchema } from "@/utils/pagination";
-
-const doctorInputSchema = z.object({
-  name: z.string().min(1),
-  specialization: z.string().min(1),
-  hospital: z.string().min(1),
-  phone: z.string().min(1),
-  email: z.email(),
-});
-
-const listDoctorsQuerySchema = paginationQuerySchema.extend({
-  search: z.string().trim().min(1).optional(),
-  specialization: z.string().trim().min(1).optional(),
-  ...dateRangeQuerySchema.shape,
-});
+import { buildDateRangeFilter } from "@/utils/dateRange";
+import { buildPaginationMeta } from "@/utils/pagination";
 
 export async function createDoctor(req: Request, res: Response) {
   const input = doctorInputSchema.parse(req.body);
@@ -51,7 +38,8 @@ export async function listDoctors(req: Request, res: Response) {
 }
 
 export async function getDoctor(req: Request, res: Response) {
-  const doctor = await Doctor.findById(req.params.id);
+  const id = idParamSchema.parse(req.params.id);
+  const doctor = await Doctor.findById(id);
   if (!doctor) {
     throw new ApiError(404, "Doctor not found");
   }
@@ -59,8 +47,9 @@ export async function getDoctor(req: Request, res: Response) {
 }
 
 export async function updateDoctor(req: Request, res: Response) {
-  const input = doctorInputSchema.partial().parse(req.body);
-  const doctor = await Doctor.findByIdAndUpdate(req.params.id, input, { new: true });
+  const id = idParamSchema.parse(req.params.id);
+  const input = doctorUpdateSchema.parse(req.body);
+  const doctor = await Doctor.findByIdAndUpdate(id, input, { new: true });
   if (!doctor) {
     throw new ApiError(404, "Doctor not found");
   }
@@ -68,7 +57,8 @@ export async function updateDoctor(req: Request, res: Response) {
 }
 
 export async function deleteDoctor(req: Request, res: Response) {
-  const doctor = await Doctor.findByIdAndDelete(req.params.id);
+  const id = idParamSchema.parse(req.params.id);
+  const doctor = await Doctor.findByIdAndDelete(id);
   if (!doctor) {
     throw new ApiError(404, "Doctor not found");
   }

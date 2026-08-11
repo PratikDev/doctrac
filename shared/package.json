@@ -1,0 +1,13 @@
+{
+  "name": "@doctrac/shared",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./schemas/*": "./schemas/*.ts",
+    "./types": "./types.ts"
+  },
+  "dependencies": {
+    "zod": "^4.4.3"
+  }
+}

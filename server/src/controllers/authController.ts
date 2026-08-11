@@ -1,15 +1,10 @@
+import { loginSchema } from "@doctrac/shared/schemas/auth";
 import { ApiError } from "@/middleware/errorHandler";
 import { User } from "@/models/User";
 import { AUTH_COOKIE_NAME, authCookieOptions } from "@/utils/cookies";
 import { signAuthToken } from "@/utils/jwt";
 import bcrypt from "bcryptjs";
 import type { Request, Response } from "express";
-import { z } from "zod";
-
-const loginSchema = z.object({
-  email: z.email(),
-  password: z.string().min(1),
-});
 
 export async function login(req: Request, res: Response) {
   const { email, password } = loginSchema.parse(req.body);

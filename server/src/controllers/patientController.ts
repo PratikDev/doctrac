@@ -1,27 +1,11 @@
+import { idParamSchema, paginationQuerySchema } from "@doctrac/shared/schemas/common";
+import { patientInputSchema, patientUpdateSchema, listPatientsQuerySchema } from "@doctrac/shared/schemas/patient";
 import type { Request, Response } from "express";
-import { z } from "zod";
 import { ApiError } from "@/middleware/errorHandler";
 import { Doctor } from "@/models/Doctor";
 import { Patient } from "@/models/Patient";
-import { buildDateRangeFilter, dateRangeQuerySchema } from "@/utils/dateRange";
-import { buildPaginationMeta, paginationQuerySchema } from "@/utils/pagination";
-
-const patientInputSchema = z.object({
-  name: z.string().min(1),
-  age: z.coerce.number().int().min(0),
-  gender: z.string().min(1),
-  phone: z.string().min(1),
-  email: z.email(),
-  condition: z.string().min(1),
-});
-
-const listPatientsQuerySchema = paginationQuerySchema.extend({
-  search: z.string().trim().min(1).optional(),
-  condition: z.string().trim().min(1).optional(),
-  ...dateRangeQuerySchema.shape,
-});
-
-const idParamSchema = z.string().min(1);
+import { buildDateRangeFilter } from "@/utils/dateRange";
+import { buildPaginationMeta } from "@/utils/pagination";
 
 async function requireDoctor(doctorId: string) {
   const exists = await Doctor.exists({ _id: doctorId });
@@ -101,8 +85,13 @@ export async function listPatients(req: Request, res: Response) {
 }
 
 export async function updatePatient(req: Request, res: Response) {
-  const input = patientInputSchema.partial().parse(req.body);
-  const patient = await Patient.findByIdAndUpdate(req.params.id, input, { new: true });
+  const id = idParamSchema.parse(req.params.id);
+  const input = patientUpdateSchema.parse(req.body);
+  if (input.doctor) {
+    await requireDoctor(input.doctor);
+  }
+
+  const patient = await Patient.findByIdAndUpdate(id, input, { new: true });
   if (!patient) {
     throw new ApiError(404, "Patient not found");
   }
@@ -110,7 +99,8 @@ export async function updatePatient(req: Request, res: Response) {
 }
 
 export async function deletePatient(req: Request, res: Response) {
-  const patient = await Patient.findByIdAndDelete(req.params.id);
+  const id = idParamSchema.parse(req.params.id);
+  const patient = await Patient.findByIdAndDelete(id);
   if (!patient) {
     throw new ApiError(404, "Patient not found");
   }
