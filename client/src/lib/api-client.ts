@@ -14,7 +14,7 @@ export class ApiError extends Error {
 }
 
 // The login endpoint's own 401 (wrong credentials) must NOT trigger the
-// global redirect below — the login form needs to catch and display it.
+// global redirect below: the login form needs to catch and display it.
 const SKIP_GLOBAL_401_PATHS = ["/api/auth/login"];
 
 async function request<T>(path: string, init?: RequestInit): Promise<T> {

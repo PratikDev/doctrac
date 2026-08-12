@@ -9,7 +9,7 @@ import { queryClient } from "@/lib/query-client";
 function invalidatePatients() {
   // Broad invalidation on purpose: a patient mutation can affect the dedicated
   // patients list, any doctor's nested patients list (incl. a reassignment's
-  // old/new doctor), and dashboard stats — cheaper to over-invalidate than to
+  // old/new doctor), and dashboard stats. Cheaper to over-invalidate than to
   // track exactly which doctor-scoped lists are stale.
   queryClient.invalidateQueries({ queryKey: ["patients"] });
   queryClient.invalidateQueries({ queryKey: ["doctorPatients"] });

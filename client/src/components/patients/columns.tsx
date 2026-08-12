@@ -38,7 +38,7 @@ export function createPatientColumns({
       header: "Doctor",
       cell: ({ row }) => {
         const { doctor } = row.original;
-        return typeof doctor === "object" ? `${doctor.name} — ${doctor.specialization}` : "—";
+        return typeof doctor === "object" ? `${doctor.name} (${doctor.specialization})` : "-";
       },
     });
   }

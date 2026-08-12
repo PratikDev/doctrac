@@ -16,7 +16,7 @@ export function AuthGuard({ children }: { children: ReactNode }) {
   }, [isPending, isError, pathname, router]);
 
   // Covers the loading state and the brief window before the redirect above
-  // actually navigates away — never flash protected content or a broken
+  // actually navigates away. Never flash protected content or a broken
   // sidebar (which itself needs the same user data) while that's pending.
   if (isPending || isError || !data) {
     return (

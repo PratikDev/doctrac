@@ -34,13 +34,13 @@ export function PatientForm({
 }: {
   /** Present => edit mode (PATCH), absent => add mode (nested POST). */
   patient?: PatientDTO;
-  /** Known doctor to add under, e.g. from the doctor detail page — hides the picker. */
+  /** Known doctor to add under, e.g. from the doctor detail page. Hides the picker. */
   fixedDoctor?: PatientDoctorRefDTO;
   onSuccess: () => void;
 }) {
   const isEdit = Boolean(patient);
   // fixedDoctor only hides the picker on *add* (implicit doctor, no choice
-  // needed) — editing must always allow reassignment, even with a known doctor.
+  // needed). Editing must always allow reassignment, even with a known doctor.
   const showDoctorPicker = isEdit || !fixedDoctor;
   const initialDoctor = fixedDoctor ?? doctorRefFromPatient(patient);
 
@@ -85,7 +85,7 @@ export function PatientForm({
                 <FieldLabel>Doctor</FieldLabel>
                 <DoctorCombobox
                   value={field.value}
-                  initialLabel={initialDoctor ? `${initialDoctor.name} — ${initialDoctor.specialization}` : undefined}
+                  initialLabel={initialDoctor ? `${initialDoctor.name} (${initialDoctor.specialization})` : undefined}
                   onSelect={(doctor) => field.onChange(doctor._id)}
                 />
                 {fieldState.invalid && <FieldError errors={[fieldState.error]} />}

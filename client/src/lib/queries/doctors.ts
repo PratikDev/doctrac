@@ -30,7 +30,7 @@ export function useDoctorQuery(id: string) {
   });
 }
 
-/** Powers the doctor combobox (patient add/edit forms) — no results until the admin types something. */
+/** Powers the doctor combobox (patient add/edit forms). No results until the admin types something. */
 export function useDoctorOptionsQuery(search: string) {
   return useQuery({
     queryKey: ["doctorOptions", search],

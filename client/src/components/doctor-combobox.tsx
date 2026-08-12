@@ -18,7 +18,7 @@ import { useDoctorOptionsQuery } from "@/lib/queries/doctors";
 import { cn } from "@/lib/utils";
 
 function optionLabel(doctor: PatientDoctorRefDTO): string {
-  return `${doctor.name} — ${doctor.specialization}`;
+  return `${doctor.name} (${doctor.specialization})`;
 }
 
 export function DoctorCombobox({

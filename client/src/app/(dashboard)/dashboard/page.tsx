@@ -23,12 +23,25 @@ export default function DashboardPage() {
       <h2 className="text-lg font-semibold">Dashboard</h2>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-        <StatCard label="Total Doctors" value={String(totalDoctors)} icon={Stethoscope} isLoading={isPending} />
-        <StatCard label="Total Patients" value={String(totalPatients)} icon={Users} isLoading={isPending} />
+        <StatCard
+          label="Total Doctors"
+          value={String(totalDoctors)}
+          icon={Stethoscope}
+          tone="primary"
+          isLoading={isPending}
+        />
+        <StatCard
+          label="Total Patients"
+          value={String(totalPatients)}
+          icon={Users}
+          tone="amber"
+          isLoading={isPending}
+        />
         <StatCard
           label="Avg. Patients / Doctor"
           value={avgPatientsPerDoctor}
           icon={TrendingUp}
+          tone="violet"
           isLoading={isPending}
         />
       </div>
